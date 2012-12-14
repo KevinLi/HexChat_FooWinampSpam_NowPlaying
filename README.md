@@ -6,10 +6,8 @@ Version 1.0.0
 
 * Initial release
 
-###Download###
-* [Version 1.0.0 (64bit)](https://github.com/downloads/KevinLi/WinampNowPlaying/WinampNowPlaying_1.0.0_64.dll)
-
 ###Installation###
+* Compile it yourself because GitHub's removing Downloads.
 * Copy the plugin to HexChat's plugin directory.
 * Start HexChat. If the plugin hasn't automatically loaded, load it by going to "**Window > Plugins and Scripts**"
 
