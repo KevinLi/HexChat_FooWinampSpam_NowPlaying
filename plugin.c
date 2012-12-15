@@ -119,19 +119,18 @@ void GetCurrentSongsName (HWND hwndWinamp, char* title, int titlesize)
 
 int np_timer(void *userdata)
 {
-	if ((hwndWinamp = FindWindow ("Winamp v1.x", NULL)) == NULL) {
-		hexchat_print (ph, "Winamp window not found. Is Winamp running?\n");
-		return HEXCHAT_EAT_ALL;
-	}
+	hwndWinamp = FindWindow ("Winamp v1.x", NULL);
+
 	strcpy(old_title, new_title);
 
 	SendMessage (hwndWinamp, WM_USER, (WPARAM) 0, (LPARAM) IPC_GETLISTPOS);
 	GetCurrentSongsName (hwndWinamp, new_title, 1024);
 
-	if(strcmp(new_title, old_title) != 0)
+	if(strcmp(new_title, old_title) != 0 && strcmp(new_title,"") != 0)
 	{
 		hexchat_printf(ph, "Now playing: %s", new_title);
 	}
+
 	return 1;
 }
 
@@ -145,7 +144,7 @@ int hexchat_plugin_init (hexchat_plugin *plugin_handle,
 
 	*plugin_name = "WinampNowPlaying";
 	*plugin_desc = "Prints the track title when the track changes";
-	*plugin_version = "1.0.0";
+	*plugin_version = "1.0.1";
 
 	timer_hook = hexchat_hook_timer(ph, 1000, np_timer, NULL);
 

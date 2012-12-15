@@ -2,6 +2,10 @@
 ***
 
 ###What's new###
+Version 1.0.1
+
+* Removed printing of "IS WINAMP RUNNING???" when Winamp/foobar is not running.
+
 Version 1.0.0
 
 * Initial release
@@ -9,7 +13,7 @@ Version 1.0.0
 ###Installation###
 * Compile it yourself because GitHub's removing Downloads.
 * Copy the plugin to HexChat's plugin directory.
-* Start HexChat. If the plugin hasn't automatically loaded, load it by going to "**Window > Plugins and Scripts**"
+* Start HexChat. If the plugin hasn't automatically loaded, load it by going to "Window > Plugins and Scripts..."
 
 ###Compilation###
 
