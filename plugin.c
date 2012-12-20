@@ -44,49 +44,57 @@ unsigned int pos;
 
 int np_timer(void *userdata)
 {
-    hwndWinamp = FindWindow("Winamp v1.x", NULL);
-
-    strcpy(old_title, new_title);
-
-    SendMessage(hwndWinamp, WM_USER, (WPARAM) 0, (LPARAM) IPC_GETLISTPOS);
-    GetWindowText(hwndWinamp, new_title, 1024);
-
-    // foo_winamp_spam and foo_vis_shpeck give almost identical outputs.
-    // foo_vis_shpeck probably shouldn't use this block of code here.
-    // But this plugin's for foo_winamp_spam.
-    // Find the first period, remove that and whatever's in front of it.
-    for(pos = 0; pos < strlen(new_title); pos++)
+	if ((hwndWinamp = FindWindow("Winamp v1.x", NULL)) == NULL)
 	{
-        if(new_title[pos] == '.')
+		return 1;
+	}
+
+	strcpy(old_title, new_title);
+
+	SendMessage(hwndWinamp, WM_USER, (WPARAM) 0, (LPARAM) IPC_GETLISTPOS);
+	GetWindowText(hwndWinamp, new_title, 1024);
+	if(strcmp(new_title, "") == 0)
+	{
+		strcpy(new_title, old_title);
+		return 1;
+	}
+
+	// foo_winamp_spam and foo_vis_shpeck give almost identical outputs.
+	// foo_vis_shpeck probably shouldn't use this block of code here.
+	// But this plugin's for foo_winamp_spam.
+	// Find the first period, remove that and whatever's in front of it.
+	for(pos = 0; pos < strlen(new_title); pos++)
+	{
+		if(new_title[pos] == '.')
 		{
-            break;
-        }
-    }
-    strncpy(new_title, new_title + pos + 2, 1024);
+			break;
+		}
+	}
+	strncpy(new_title, new_title + pos + 2, 1024);
 
-    // Truncate "- Winamp" from end
-    new_title[strlen(new_title) - 9] = '\0';
+	// Truncate "- Winamp" from end
+	new_title[strlen(new_title) - 9] = '\0';
 
-    if(strcmp(new_title, old_title) != 0 && strcmp(new_title, "") != 0)
-    {
-        hexchat_printf(ph, "Now playing: %s", new_title);
-    }
+	if(strcmp(new_title, old_title) != 0)
+	{
+		hexchat_printf(ph, "Now playing: %s", new_title);
+	}
 
-    return 1;
+	return 1;
 }
 
 int hexchat_plugin_init(hexchat_plugin *plugin_handle, char **plugin_name,
 	char **plugin_desc, char **plugin_version, char *arg)
 {
-    ph = plugin_handle;
+	ph = plugin_handle;
 
-    *plugin_name = "HexChat_FooWinampSpam_NowPlaying";
-    *plugin_desc = "Prints the track title when the track changes";
-    *plugin_version = "1.0.2";
+	*plugin_name = "HexChat_FooWinampSpam_NowPlaying";
+	*plugin_desc = "Prints the track title when the track changes";
+	*plugin_version = "1.0.3";
 
-    timer_hook = hexchat_hook_timer(ph, 1000, np_timer, NULL);
+	timer_hook = hexchat_hook_timer(ph, 1000, np_timer, NULL);
 
-    hexchat_printf(ph, "%s %s plugin loaded successfully!\n", *plugin_name, *plugin_version);
+	hexchat_printf(ph, "%s %s plugin loaded successfully!\n", *plugin_name, *plugin_version);
 
-    return 1;
+	return 1;
 }
